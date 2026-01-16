@@ -14,3 +14,6 @@ endif
 release:
 	gcc -c -fPIC cutilities.c -o cutilities.o
 	gcc $(SHARED_FLAGS) -o libcutilities.so cutilities.o
+
+clean:
+	rm -f *.o *.so
