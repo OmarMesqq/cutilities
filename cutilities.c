@@ -130,31 +130,35 @@ void trim_leading_spaces(char* line) {
 }
 
 void dump_string(const char* s) {
-  char* p = s;
-  while (*p != '\0') {
-    printf("char: %c, %d (dec), %02x (hex)\n", *p, *p, *p);
-    p++;
+  char* ps = s;
+  while (*ps != '\0') {
+    printf("char: %c, %d (dec), %02x (hex)\n", *ps, *ps, *ps);
+    ps++;
   }
   printf("\n");
 }
 
-int string_to_int(char* str) {
-  int num = 0;
-  int digit = 0;
+int string_to_int(const char* s) {
+  char* sp = s;
   int isNegative = 0;
   // is first char a minus sign?
-  if (*str == '-') {
+  if (*sp == '-') {
     isNegative = 1;
-    str++;
+    sp++;
   }
-  while (*str != '\0') {
+
+  int num = 0;
+  int digit = 0;
+  
+  while (*sp != '\0') {
     // subtract the value of the digit char from 0 in ASCII table, getting its true value
-    digit = *str - '0';
+    digit = *sp - '0';
     // each new digit "adds" another power of 10 to the overall number
     num *= 10;
     num += digit;
-    str++;
+    sp++;
   }
+  
   if (isNegative) {
     num *= -1;
   }

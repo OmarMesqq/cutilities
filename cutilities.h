@@ -33,17 +33,16 @@ void trim_leading_spaces(char* line);
 void dump_string(const char* s);
 
 /**
- * Converts the null-terminated string `str` to an integer in
- * a single pass.
+ * Converts the null-terminated string to an integer in a single pass.
  *
  * Runs in O(n)
  *
  * WARNING: Doesn't correctly handle broken inputs such as those with space, letters
  * and overflowing integers
- *
- * SIDE-EFFECT: modifies `str`
+ * 
+ * @param s null-terminated string representing a whole number (`int`)
  */
-int string_to_int(char* str);
+int string_to_int(const char* s);
 
 /**
  * Writes in the buffer `code` at offset `pos` a base 10 signed `integer`
