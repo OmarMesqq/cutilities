@@ -11,7 +11,7 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
     fprintf(stderr, "get_basename: the maximum basename length cannot be zero!\n");
     return NULL;
   }
-  char* basename = malloc(maxBaseNameLength * sizeof(char));
+  char* basename = calloc(maxBaseNameLength, sizeof(char));
   if (!basename) {
     fprintf(stderr, "get_basename: failed to create array for basename\n");
     return NULL;
@@ -21,8 +21,12 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
   char* ptr = (char*)filepath;
   while (*ptr != '\0') {
     if (*ptr == '/') {
-      char next = *(ptr + 1);  // look-ahead
-      if (next == '\0') {
+      // look-ahead
+      if (*(ptr + 1) == '\0') {
+        if (basename[0] == 0) {
+          basename[0] = '/';
+          ++i;
+        }
         ptr++;
         continue;
       }
@@ -40,6 +44,7 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
   }
 
   basename[i] = '\0';
+  fprintf(stderr, "returning: %s\n", basename);
   return basename;
 }
 
