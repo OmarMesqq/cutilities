@@ -18,7 +18,7 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
   }
 
   unsigned int i = 0;
-  char* ptr = (char*)filepath;
+  const char* ptr = filepath;
 
   while (*ptr != '\0') {
     char current = *ptr;
@@ -67,7 +67,7 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
        * basename shall be truncated (happy path) OR
        * if we are in an intermediate folder
        */
-      char* remainingStr = ptr;
+      const char* remainingStr = ptr;
       unsigned char isStrOver = 1;  // assume the string is indeed over
       for (; *remainingStr != '\0'; remainingStr++) {
         if (*remainingStr == '/') isStrOver = 0;
