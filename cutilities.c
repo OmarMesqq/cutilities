@@ -154,14 +154,14 @@ int string_to_int(const char* s) {
   return num;
 }
 
-void write_integer_le(unsigned char code[], int* pos, int integer) {
-  code[*pos] = integer & 0xFF;
+void write_integer_le(unsigned char buf[], int* pos, int integer) {
+  buf[*pos] = integer & 0xFF;
   (*pos)++;
-  code[*pos] = (integer >> 8) & 0xFF;
+  buf[*pos] = (integer >> 8) & 0xFF;
   (*pos)++;
-  code[*pos] = (integer >> 16) & 0xFF;
+  buf[*pos] = (integer >> 16) & 0xFF;
   (*pos)++;
-  code[*pos] = (integer >> 24) & 0xFF;
+  buf[*pos] = (integer >> 24) & 0xFF;
   (*pos)++;
 }
 

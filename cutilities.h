@@ -38,19 +38,22 @@ void dump_string(const char* s);
  *
  * WARNING: Doesn't correctly handle broken inputs such as those with space, letters
  * and overflowing integers
- * 
+ *
  * @param s null-terminated string representing a whole number (`int`)
  */
 int string_to_int(const char* s);
 
 /**
- * Writes in the buffer `code` at offset `pos` a base 10 signed `integer`
- * (32 bits on x86-64) in Little Endian hexadecimal.
- * Used for immediate values and jump offsets.
+ * Writes a signed integer's bytes in Little Endian ordering
+ * in a buffer at the offset pointed by `pos`.
  *
- * SIDE-EFFECT: modifies `pos` as the buffer is traversed
+ * @param buf byte array
+ * @param pos pointer to an integer marking the desired offset to write at
+ * @param integer whole number whose bytes will be written
+ *
+ * SIDE-EFFECT: increments `pos` as the buffer is traversed
  */
-void write_integer_le(unsigned char code[], int* pos, int integer);
+void write_integer_le(unsigned char buf[], int* pos, int integer);
 
 /**
  * Returns the "width" (amount of digits) of a
@@ -64,6 +67,14 @@ unsigned long get_number_width(unsigned long ul);
  */
 char* numtoi(unsigned long ul, unsigned long width);
 
+/**
+ * On success, returns the size in bytes of a file in persistent storage.
+ * On failure, `-1`
+ *
+ * SIDE-EFFECT: resets the file position indicator to the beginning.
+ *
+ * @param f ALREADY OPEN file stream in BINARY READ mode
+ */
 long get_filesize(FILE* f);
 
 #endif
