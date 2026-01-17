@@ -37,8 +37,16 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
       continue;
     }
     if (i >= (maxBaseNameLength - 1)) {
-      fprintf(stderr, "get_basename: basename buffer exceeded, truncating string\n");
-      break;
+      char* remainingStr = ptr;
+      unsigned char isStrOver = 1;  // assume the string really is over
+      for (; *remainingStr != '\0'; remainingStr++) {
+        if (*remainingStr == '/') isStrOver = 0;
+      }
+      if (isStrOver) {
+        fprintf(stderr, "get_basename: basename buffer exceeded, truncating string\n");
+        break;
+      }
+      // fall-through
     }
     basename[i] = current;
     ++i;
@@ -46,6 +54,7 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
   }
 
   basename[i] = '\0';
+  fprintf(stderr, "get_basename returning: %s\n", basename);
   return basename;
 }
 
