@@ -7,6 +7,10 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
     fprintf(stderr, "get_basename: no filepath provided to extract a file basename!\n");
     return NULL;
   }
+  if (maxBaseNameLength == 0) {
+    fprintf(stderr, "get_basename: the maximum basename length cannot be zero!\n");
+    return NULL;
+  }
   char* basename = malloc(maxBaseNameLength * sizeof(char));
   if (!basename) {
     fprintf(stderr, "get_basename: failed to create array for basename\n");
@@ -67,9 +71,6 @@ void trim_leading_spaces(char* lineBuffer) {
   char* aux = p;  // helper pointer with whitespace already consumed
   unsigned i = 0;
   while (*aux != '\0') {
-#ifdef DEBUG
-    printf("trim_leading_spaces: setting lineBuffer[i = %d] (%c) to lineBuffer[spaces + i = %d] (%c)\n", i, lineBuffer[i], spaces + i, lineBuffer[spaces + i]);
-#endif
     // shifts the entire string to beginning, eliminating spaces
     lineBuffer[i] = lineBuffer[spaces + i];
     i++;
