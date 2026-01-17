@@ -6,27 +6,30 @@ LIB_PATH := $(shell pwd)
 INCLUDES := -I$(LIB_PATH)
 LDFLAGS  := -L$(LIB_PATH) -lcutilities -Wl,-rpath,$(LIB_PATH)
 WARNINGS := -Wall -Wextra -Winline -pedantic
+VALGRIND_FLAGS := -s --leak-check=full --track-origins=yes --show-leak-kinds=all
 
 # Detect the Operating System
 UNAME_S := $(shell uname -s)
 
 # Default to Linux
 SHARED_FLAGS := -shared -Wl,-soname,$(SHARED_LIBRARY_FILE)
+LEAKS_CMD := valgrind $(VALGRIND_FLAGS) ./$(TEST_BINARY)
 
-# Overrides for macOS: it needs -install_name for @rpath support
+# Override some flags on macOS
 ifeq ($(UNAME_S),Darwin)
   SHARED_FLAGS := -shared -install_name @rpath/$(SHARED_LIBRARY_FILE)
+	LEAKS_CMD := MallocStackLogging=1 leaks --atExit -- ./$(TEST_BINARY)
 endif
 
 release:
-	gcc $(WARNINGS) -c -fPIC cutilities.c -o $(LIB_OBJECT_FILE)
-	gcc $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(LIB_OBJECT_FILE)
+	gcc -O3 $(WARNINGS) -c -fPIC cutilities.c -o $(LIB_OBJECT_FILE)
+	gcc -O3 $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(LIB_OBJECT_FILE)
 
 test: release
-	gcc -g -O3 $(WARNINGS) $(TEST_SOURCE_FILEPATH) $(INCLUDES) $(LDFLAGS) -o $(TEST_BINARY)
+	gcc -O3 -g $(WARNINGS) $(TEST_SOURCE_FILEPATH) $(INCLUDES) $(LDFLAGS) -o $(TEST_BINARY)
 
 leaks: test
-	MallocStackLogging=1 leaks --atExit -- ./test_runner
+	$(LEAKS_CMD)
 
 clean:
 	rm -rf $(LIB_OBJECT_FILE) $(SHARED_LIBRARY_FILE) $(TEST_BINARY) $(TEST_BINARY).dSYM
