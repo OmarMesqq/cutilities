@@ -90,18 +90,6 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
   return basename;
 }
 
-long get_filesize(FILE* f) {
-  fseek(f, 0, SEEK_END);
-  long length = ftell(f);
-  rewind(f);
-
-  if (length == -1L) {
-    fprintf(stderr, "get_filesize: failed to read file size using 'ftell'\n");
-    return -1;
-  }
-  return length;
-}
-
 void trim_leading_spaces(char* line) {
   char* p = line;
   // early return if string doesn't have leading whitespace
@@ -130,7 +118,7 @@ void trim_leading_spaces(char* line) {
 }
 
 void dump_string(const char* s) {
-  char* ps = s;
+  char* ps = (char*)s;
   while (*ps != '\0') {
     printf("char: %c, %d (dec), %02x (hex)\n", *ps, *ps, *ps);
     ps++;
@@ -139,7 +127,7 @@ void dump_string(const char* s) {
 }
 
 int string_to_int(const char* s) {
-  char* sp = s;
+  char* sp = (char*)s;
   int isNegative = 0;
   // is first char a minus sign?
   if (*sp == '-') {
@@ -149,7 +137,7 @@ int string_to_int(const char* s) {
 
   int num = 0;
   int digit = 0;
-  
+
   while (*sp != '\0') {
     // subtract the value of the digit char from 0 in ASCII table, getting its true value
     digit = *sp - '0';
@@ -158,7 +146,7 @@ int string_to_int(const char* s) {
     num += digit;
     sp++;
   }
-  
+
   if (isNegative) {
     num *= -1;
   }
@@ -237,4 +225,16 @@ char* numtoi(unsigned long ul, unsigned long width) {
 
   str[width] = '\0';
   return str;
+}
+
+long get_filesize(FILE* f) {
+  fseek(f, 0, SEEK_END);
+  long length = ftell(f);
+  rewind(f);
+
+  if (length == -1L) {
+    fprintf(stderr, "get_filesize: failed to read file size using 'ftell'\n");
+    return -1;
+  }
+  return length;
 }

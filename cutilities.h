@@ -27,8 +27,7 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength);
 void trim_leading_spaces(char* line);
 
 /**
- * Prints the entire string `s`, followed by a character-by-character
- * dump of its contents (as character, decimal, and hex).
+ * Does a character-by-character dump of a string (as character, decimal, and hex).
  */
 void dump_string(const char* s);
 
