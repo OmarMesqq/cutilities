@@ -7,6 +7,7 @@ INCLUDES := -I$(LIB_PATH)
 LDFLAGS  := -L$(LIB_PATH) -lcutilities -Wl,-rpath,$(LIB_PATH)
 WARNINGS := -Wall -Wextra -Winline -pedantic
 VALGRIND_FLAGS := -s --leak-check=full --track-origins=yes --show-leak-kinds=all
+DEBUG_FLAGS := -O0 -g
 
 # Detect the Operating System
 UNAME_S := $(shell uname -s)
@@ -25,8 +26,12 @@ release:
 	gcc -O3 $(WARNINGS) -c -fPIC cutilities.c -o $(LIB_OBJECT_FILE)
 	gcc -O3 $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(LIB_OBJECT_FILE)
 
-test: release
-	gcc -O3 -g $(WARNINGS) $(TEST_SOURCE_FILEPATH) $(INCLUDES) $(LDFLAGS) -o $(TEST_BINARY)
+debug:
+	gcc $(DEBUG_FLAGS) $(WARNINGS) -c -fPIC cutilities.c -o $(LIB_OBJECT_FILE)
+	gcc $(DEBUG_FLAGS) $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(LIB_OBJECT_FILE)
+
+test: debug
+	gcc $(DEBUG_FLAGS) $(WARNINGS) $(TEST_SOURCE_FILEPATH) $(INCLUDES) $(LDFLAGS) -o $(TEST_BINARY)
 
 leaks: test
 	$(LEAKS_CMD)
