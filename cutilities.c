@@ -102,11 +102,6 @@ long get_filesize(FILE* f) {
   return length;
 }
 
-/**
- * Trims leading spaces (' ')/ 32 (dec)/ 0x20 (hex),
- * modifying `lineBuffer` in-place.
- * Runs in O(n)
- */
 void trim_leading_spaces(char* lineBuffer) {
   char* p = lineBuffer;
   // early return if string doesn't have leading whitespace
@@ -134,10 +129,6 @@ void trim_leading_spaces(char* lineBuffer) {
   lineBuffer[i] = '\0';
 }
 
-/**
- * Prints the entire string `s`, followed by a character-by-character
- * dump of its contents (as character, decimal, and hex).
- */
 void dump_string(char* s) {
   printf("%s", s);
   printf("dump_string: dumping string above...\n");
@@ -149,12 +140,6 @@ void dump_string(char* s) {
   printf("\n");
 }
 
-/**
- * Converts the null-terminated string `str` to an integer.
- * Runs in O(n) - single pass.
- * Doesn't correctly handle broken inputs such as those with space, letters
- * and overflowing integers
- */
 int string_to_int(char* str) {
   int num = 0;
   int digit = 0;
@@ -179,12 +164,6 @@ int string_to_int(char* str) {
   return num;
 }
 
-/**
- * Writes in the buffer `code` at offset `pos` a base 10 signed `integer`
- * (32 bits on x86-64) in Little Endian hexadecimal.
- * Used for immediate values and jump offsets.
- * SIDE-EFFECT: modifies `pos` as the buffer is traversed
- */
 void write_integer_le(unsigned char code[], int* pos, int integer) {
   code[*pos] = integer & 0xFF;
   (*pos)++;
