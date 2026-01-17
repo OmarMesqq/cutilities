@@ -103,6 +103,28 @@ int main(void) {
   assert(actualBaseName != NULL);
   assert(strcmp(actualBaseName, "/") == 0);
   free(actualBaseName);
+
+  // 14. Premature Truncation (The "Long Parent Directory" Bug)
+  // Scenario: The directory name is longer than the buffer, but the filename is short.
+  // OLD CODE FAIL: Sees "very_long..." -> buffer full -> aborts -> returns "very"
+  // CORRECT BEHAVIOR: Skips directory -> sees "file.txt" -> fits "file" -> returns "file"
+  filePath = "/very_long_directory_name/file.txt";
+  maxBaseNameLength = SMALL_MAX_FILE_BASENAME_LEN;
+  actualBaseName = get_basename(filePath, maxBaseNameLength);
+  assert(actualBaseName != NULL);
+  assert(strcmp(actualBaseName, "file") == 0); 
+  free(actualBaseName);
+
+  // 15. Double Trailing Slashes
+  // Scenario: Multiple slashes at the end of a directory path.
+  // OLD CODE FAIL: Resets index on first '/', checks basename[0] on second '/' -> returns ""
+  // CORRECT BEHAVIOR: Ignores all trailing slashes -> returns "folder"
+  filePath = "/path/to/folder//"; 
+  maxBaseNameLength = MAX_FILE_BASENAME_LEN;
+  actualBaseName = get_basename(filePath, maxBaseNameLength);
+  assert(actualBaseName != NULL);
+  assert(strcmp(actualBaseName, "folder") == 0);
+  free(actualBaseName);
   
   printf("All Cutilities tests passed!\n");
   return 0;
