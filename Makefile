@@ -1,19 +1,31 @@
-# 1. Detect the Operating System
+LIB_OBJECT_FILE := cutilities.o
+SHARED_LIBRARY_FILE := libcutilities.so
+TEST_SOURCE_FILEPATH := test/test_main.c
+TEST_BINARY := test_runner
+LIB_PATH := $(shell pwd)
+INCLUDES := -I$(LIB_PATH)
+LDFLAGS  := -L$(LIB_PATH) -lcutilities -Wl,-rpath,$(LIB_PATH)
+
+# Detect the Operating System
 UNAME_S := $(shell uname -s)
 
-# 2. Set defaults (Linux)
-# On Linux, we use -shared and usually set the soname (optional but good practice)
-SHARED_FLAGS := -shared -Wl,-soname,libcutilities.so
+# Default to Linux
+SHARED_FLAGS := -shared -Wl,-soname,$(SHARED_LIBRARY_FILE)
 
-# 3. macOS Overrides
+# Overrides for macOS: it needs -install_name for @rpath support
 ifeq ($(UNAME_S),Darwin)
-  # macOS needs -install_name for @rpath support
-  SHARED_FLAGS := -shared -install_name @rpath/libcutilities.so
+  SHARED_FLAGS := -shared -install_name @rpath/$(SHARED_LIBRARY_FILE)
 endif
 
 release:
-	gcc -c -fPIC cutilities.c -o cutilities.o
-	gcc $(SHARED_FLAGS) -o libcutilities.so cutilities.o
+	gcc -c -fPIC cutilities.c -o $(LIB_OBJECT_FILE)
+	gcc $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(LIB_OBJECT_FILE)
+
+
+test: release
+	gcc -g -O3 -Wall -Wextra -Winline $(TEST_SOURCE_FILEPATH) $(INCLUDES) $(LDFLAGS) -o $(TEST_BINARY)
+
+#TODO: leaks test
 
 clean:
-	rm -f *.o *.so
+	rm -f $(LIB_OBJECT_FILE) $(SHARED_LIBRARY_FILE)
