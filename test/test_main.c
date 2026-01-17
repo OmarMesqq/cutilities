@@ -13,15 +13,15 @@ int main(void) {
   unsigned maxBaseNameLength = 0;
   char* actualBaseName = NULL;
 
-  // 1. no filePath
+  // 1. No filePath
   assert(get_basename(filePath, maxBaseNameLength) == NULL);
 
-  // 2. no max length is zero
+  // 2. No max length is zero
   filePath = "/some/path";
   maxBaseNameLength = 0;
   assert(get_basename(filePath, maxBaseNameLength) == NULL);
 
-  // 3. path starting with /
+  // 3. Path starting with /
   filePath = "/I/start/with/a/slash";
   maxBaseNameLength = MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
@@ -29,7 +29,7 @@ int main(void) {
   assert(strcmp(actualBaseName, "slash") == 0);
   free(actualBaseName);
 
-  // 4. path NOT starting with /
+  // 4. Path NOT starting with /
   filePath = "I/do/not/start/with/a/slash";
   maxBaseNameLength = MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
@@ -37,7 +37,7 @@ int main(void) {
   assert(strcmp(actualBaseName, "slash") == 0);
   free(actualBaseName);
 
-  // 5. path  starting with .
+  // 5. Path  starting with .
   filePath = "./I/start/with/a/dot";
   maxBaseNameLength = MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
@@ -45,7 +45,7 @@ int main(void) {
   assert(strcmp(actualBaseName, "dot") == 0);
   free(actualBaseName);
 
-  // 6. path  starting with ..
+  // 6. Path  starting with ..
   filePath = "../I/start/with/..";
   maxBaseNameLength = MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
@@ -101,7 +101,7 @@ int main(void) {
   filePath = "///";
   actualBaseName = get_basename(filePath, MAX_FILE_BASENAME_LEN);
   assert(actualBaseName != NULL);
-  assert(strcmp(actualBaseName, "") == 0);
+  assert(strcmp(actualBaseName, "/") == 0);
   free(actualBaseName);
   
   printf("All Cutilities tests passed!\n");
