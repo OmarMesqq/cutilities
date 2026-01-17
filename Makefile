@@ -5,6 +5,7 @@ TEST_BINARY := test_runner
 LIB_PATH := $(shell pwd)
 INCLUDES := -I$(LIB_PATH)
 LDFLAGS  := -L$(LIB_PATH) -lcutilities -Wl,-rpath,$(LIB_PATH)
+WARNINGS := -Wall -Wextra -Winline -pedantic
 
 # Detect the Operating System
 UNAME_S := $(shell uname -s)
@@ -18,14 +19,14 @@ ifeq ($(UNAME_S),Darwin)
 endif
 
 release:
-	gcc -c -fPIC cutilities.c -o $(LIB_OBJECT_FILE)
+	gcc $(WARNINGS) -c -fPIC cutilities.c -o $(LIB_OBJECT_FILE)
 	gcc $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(LIB_OBJECT_FILE)
 
-
 test: release
-	gcc -g -O3 -Wall -Wextra -Winline $(TEST_SOURCE_FILEPATH) $(INCLUDES) $(LDFLAGS) -o $(TEST_BINARY)
+	gcc -g -O3 $(WARNINGS) $(TEST_SOURCE_FILEPATH) $(INCLUDES) $(LDFLAGS) -o $(TEST_BINARY)
 
-#TODO: leaks test
+leaks: test
+	MallocStackLogging=1 leaks --atExit -- ./test_runner
 
 clean:
-	rm -f $(LIB_OBJECT_FILE) $(SHARED_LIBRARY_FILE)
+	rm -rf $(LIB_OBJECT_FILE) $(SHARED_LIBRARY_FILE) $(TEST_BINARY) $(TEST_BINARY).dSYM
