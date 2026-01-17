@@ -50,7 +50,7 @@ long get_filesize(FILE* f) {
  * modifying `lineBuffer` in-place.
  * Runs in O(n)
  */
-void trimLeadingSpaces(char* lineBuffer) {
+void trim_leading_spaces(char* lineBuffer) {
   char* p = lineBuffer;
   // early return if string doesn't have leading whitespace
   if (*p != ' ') {
@@ -68,7 +68,7 @@ void trimLeadingSpaces(char* lineBuffer) {
   unsigned i = 0;
   while (*aux != '\0') {
 #ifdef DEBUG
-    printf("trimLeadingSpaces: setting lineBuffer[i = %d] (%c) to lineBuffer[spaces + i = %d] (%c)\n", i, lineBuffer[i], spaces + i, lineBuffer[spaces + i]);
+    printf("trim_leading_spaces: setting lineBuffer[i = %d] (%c) to lineBuffer[spaces + i = %d] (%c)\n", i, lineBuffer[i], spaces + i, lineBuffer[spaces + i]);
 #endif
     // shifts the entire string to beginning, eliminating spaces
     lineBuffer[i] = lineBuffer[spaces + i];
@@ -84,9 +84,9 @@ void trimLeadingSpaces(char* lineBuffer) {
  * Prints the entire string `s`, followed by a character-by-character
  * dump of its contents (as character, decimal, and hex).
  */
-void dumpString(char* s) {
+void dump_string(char* s) {
   printf("%s", s);
-  printf("dumpString: dumping string above...\n");
+  printf("dump_string: dumping string above...\n");
   char* p = s;
   while (*p != '\0') {
     printf("char: %c, %d (dec), %02x (hex)\n", *p, *p, *p);
@@ -101,7 +101,7 @@ void dumpString(char* s) {
  * Doesn't correctly handle broken inputs such as those with space, letters
  * and overflowing integers
  */
-int stringToInt(char* str) {
+int string_to_int(char* str) {
   int num = 0;
   int digit = 0;
   int isNegative = 0;
@@ -131,7 +131,7 @@ int stringToInt(char* str) {
  * Used for immediate values and jump offsets.
  * SIDE-EFFECT: modifies `pos` as the buffer is traversed
  */
-void emitIntegerInHex(unsigned char code[], int* pos, int integer) {
+void write_integer_le(unsigned char code[], int* pos, int integer) {
   code[*pos] = integer & 0xFF;
   (*pos)++;
   code[*pos] = (integer >> 8) & 0xFF;

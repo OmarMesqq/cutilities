@@ -5,10 +5,10 @@
 
 char* get_basename(const char* filepath, unsigned maxBaseNameLength);
 long get_filesize(FILE* f);
-void trimLeadingSpaces(char* lineBuffer);
-void dumpString(char* s);
-int stringToInt(char* str);
-void emitIntegerInHex(unsigned char code[], int* pos, int integer);
+void trim_leading_spaces(char* lineBuffer);
+void dump_string(char* s);
+int string_to_int(char* str);
+void write_integer_le(unsigned char code[], int* pos, int integer);
 /**
  * Returns the "width" (amount of digits) of a
  * non-negative whole number `ul`.
