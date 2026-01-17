@@ -2,11 +2,6 @@
 
 #include <stdlib.h>
 
-/**
- * 
- * @param filepath
- * @param maxBaseNameLength maximal size for basename string INCLUDING the null terminator
- */
 char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
   if (!filepath) {
     fprintf(stderr, "get_basename: no filepath provided to extract a file basename!\n");

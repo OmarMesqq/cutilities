@@ -3,6 +3,16 @@
 
 #include <stdio.h>
 
+/**
+ * Takes an Unix absolute or relative file path and
+ * returns the its basename as a heap allocated string.
+ * 
+ * This function truncates the returned string to `maxBaseNameLength - 1` characters
+ * of the basename as it has to include the null terminator.
+ * 
+ * @param filepath string representing a file's path
+ * @param maxBaseNameLength maximal size for basename string INCLUDING the null terminator
+ */
 char* get_basename(const char* filepath, unsigned maxBaseNameLength);
 long get_filesize(FILE* f);
 void trim_leading_spaces(char* lineBuffer);
