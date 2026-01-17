@@ -25,6 +25,7 @@ int main(void) {
   filePath = "/I/start/with/a/slash";
   maxBaseNameLength = MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
+  assert(actualBaseName != NULL);
   assert(strcmp(actualBaseName, "slash") == 0);
   free(actualBaseName);
 
@@ -32,6 +33,7 @@ int main(void) {
   filePath = "I/do/not/start/with/a/slash";
   maxBaseNameLength = MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
+  assert(actualBaseName != NULL);
   assert(strcmp(actualBaseName, "slash") == 0);
   free(actualBaseName);
 
@@ -39,6 +41,7 @@ int main(void) {
   filePath = "./I/start/with/a/dot";
   maxBaseNameLength = MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
+  assert(actualBaseName != NULL);
   assert(strcmp(actualBaseName, "dot") == 0);
   free(actualBaseName);
 
@@ -46,7 +49,59 @@ int main(void) {
   filePath = "../I/start/with/..";
   maxBaseNameLength = MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
+  assert(actualBaseName != NULL);
   assert(strcmp(actualBaseName, "..") == 0);
+  free(actualBaseName);
+
+  // 7. File in current directory (No slashes)
+  filePath = "simple_file.txt";
+  actualBaseName = get_basename(filePath, MAX_FILE_BASENAME_LEN);
+  assert(actualBaseName != NULL);
+  assert(strcmp(actualBaseName, "simple_file.txt") == 0);
+  free(actualBaseName);
+
+  // 8. Trailing slashes (should strip trailing slashes)
+  filePath = "/path/to/folder/"; 
+  actualBaseName = get_basename(filePath, MAX_FILE_BASENAME_LEN);
+  assert(actualBaseName != NULL);
+  assert(strcmp(actualBaseName, "folder") == 0);
+  free(actualBaseName);
+
+  // 9. Root path
+  filePath = "/";
+  actualBaseName = get_basename(filePath, MAX_FILE_BASENAME_LEN);
+  assert(actualBaseName != NULL);
+  assert(strcmp(actualBaseName, "/") == 0); 
+  free(actualBaseName);
+
+  // 10. Multiple/Redundant Slashes
+  filePath = "/path//to///file";
+  actualBaseName = get_basename(filePath, MAX_FILE_BASENAME_LEN);
+  assert(actualBaseName != NULL);
+  assert(strcmp(actualBaseName, "file") == 0);
+  free(actualBaseName);
+
+  // 11. Truncation / Buffer Limit Logic
+  filePath = "/path/to/very_long_filename.txt";
+  maxBaseNameLength = SMALL_MAX_FILE_BASENAME_LEN; 
+  actualBaseName = get_basename(filePath, maxBaseNameLength);
+  assert(actualBaseName != NULL);
+  assert(strlen(actualBaseName) < SMALL_MAX_FILE_BASENAME_LEN);
+  assert(strcmp(actualBaseName, "very") == 0); // 4 chars + NULL terminator
+  free(actualBaseName);
+
+  // 12. Empty String
+  filePath = "";
+  actualBaseName = get_basename(filePath, MAX_FILE_BASENAME_LEN);
+  assert(actualBaseName != NULL);
+  assert(strcmp(actualBaseName, "") == 0);
+  free(actualBaseName);
+
+  // 13. Root with multiple slashes
+  filePath = "///";
+  actualBaseName = get_basename(filePath, MAX_FILE_BASENAME_LEN);
+  assert(actualBaseName != NULL);
+  assert(strcmp(actualBaseName, "") == 0);
   free(actualBaseName);
   
   printf("All Cutilities tests passed!\n");
