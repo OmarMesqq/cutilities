@@ -51,7 +51,6 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
   }
 
   basename[i] = '\0';
-  fprintf(stderr, "returning: %s\n", basename);
   return basename;
 }
 
