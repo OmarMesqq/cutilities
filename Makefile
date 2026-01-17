@@ -6,7 +6,6 @@ LIB_PATH := $(shell pwd)
 INCLUDES := -I$(LIB_PATH)
 LDFLAGS  := -L$(LIB_PATH) -lcutilities -Wl,-rpath,$(LIB_PATH)
 WARNINGS := -Wall -Wextra -Winline -pedantic
-VALGRIND_FLAGS := -s --leak-check=full --track-origins=yes --show-leak-kinds=all
 DEBUG_FLAGS := -O0 -g -fsanitize=address
 
 # Detect the Operating System
@@ -14,7 +13,7 @@ UNAME_S := $(shell uname -s)
 
 # Default to Linux
 SHARED_FLAGS := -shared -Wl,-soname,$(SHARED_LIBRARY_FILE)
-LEAKS_CMD := valgrind $(VALGRIND_FLAGS) ./$(TEST_BINARY)
+LEAKS_CMD := ./$(TEST_BINARY)
 
 # Override some flags on macOS
 ifeq ($(UNAME_S),Darwin)
