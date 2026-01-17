@@ -1,0 +1,29 @@
+name: Testing pipeline for Cutilities library
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Valgrind
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y valgrind
+
+    - name: Build and execute test runner
+      run: |
+        make test
+        ./test_runner
+
+    - name: Scan binary for memory leaks
+      run: make leaks
+
