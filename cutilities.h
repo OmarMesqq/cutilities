@@ -10,7 +10,7 @@
  * This function truncates the returned string to `maxBaseNameLength - 1` characters
  * of the basename as it has to include the null terminator.
  * 
- * Currently, this runs at `O(N^2)`
+ * Runs in O(N^2)
  * 
  * @param filepath string representing a file's path
  * @param maxBaseNameLength maximal size for basename string INCLUDING the null terminator
@@ -18,11 +18,13 @@
 char* get_basename(const char* filepath, unsigned maxBaseNameLength);
 
 /**
- * Trims leading spaces (' ')/ 32 (dec)/ 0x20 (hex),
- * modifying `lineBuffer` in-place.
+ * Trims leading spaces (' ')/ 32 (dec)/ 0x20 (hex).
+ * 
  * Runs in O(n)
+ * 
+ * SIDE-EFFECT: modifies `line` in-place
  */
-void trim_leading_spaces(char* lineBuffer);
+void trim_leading_spaces(char* line);
 
 /**
  * Prints the entire string `s`, followed by a character-by-character
@@ -31,9 +33,12 @@ void trim_leading_spaces(char* lineBuffer);
 void dump_string(char* s);
 
 /**
- * Converts the null-terminated string `str` to an integer.
- * Runs in O(n) - single pass.
- * Doesn't correctly handle broken inputs such as those with space, letters
+ * Converts the null-terminated string `str` to an integer in
+ * a single pass.
+ * 
+ * Runs in O(n)
+ * 
+ * WARNING: Doesn't correctly handle broken inputs such as those with space, letters
  * and overflowing integers
  */
 int string_to_int(char* str);

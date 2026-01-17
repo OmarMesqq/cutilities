@@ -102,8 +102,8 @@ long get_filesize(FILE* f) {
   return length;
 }
 
-void trim_leading_spaces(char* lineBuffer) {
-  char* p = lineBuffer;
+void trim_leading_spaces(char* line) {
+  char* p = line;
   // early return if string doesn't have leading whitespace
   if (*p != ' ') {
     return;
@@ -120,13 +120,13 @@ void trim_leading_spaces(char* lineBuffer) {
   unsigned i = 0;
   while (*aux != '\0') {
     // shifts the entire string to beginning, eliminating spaces
-    lineBuffer[i] = lineBuffer[spaces + i];
+    line[i] = line[spaces + i];
     i++;
     aux++;
   }
 
   // "discard" remaining bytes at end of string
-  lineBuffer[i] = '\0';
+  line[i] = '\0';
 }
 
 void dump_string(char* s) {
