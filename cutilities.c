@@ -21,18 +21,24 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
   char* ptr = (char*)filepath;
   while (*ptr != '\0') {
     if (*ptr == '/') {
+      char next = *(ptr + 1);  // look-ahead
+      if (next == '\0') {
+        ptr++;
+        continue;
+      }
       i = 0;
       ptr++;
       continue;
     }
     if (i >= maxBaseNameLength) {
-      printf("get_basename: basename buffer exceeded, truncating string\n");
+      fprintf(stderr, "get_basename: basename buffer exceeded, truncating string\n");
       break;
     }
     basename[i] = *ptr;
     ++i;
     ptr++;
   }
+
   basename[i] = '\0';
   return basename;
 }
