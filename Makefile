@@ -7,7 +7,7 @@ INCLUDES := -I$(LIB_PATH)
 LDFLAGS  := -L$(LIB_PATH) -lcutilities -Wl,-rpath,$(LIB_PATH)
 WARNINGS := -Wall -Wextra -Winline -pedantic
 VALGRIND_FLAGS := -s --leak-check=full --track-origins=yes --show-leak-kinds=all
-DEBUG_FLAGS := -O0 -g -fsanitize=address
+DEBUG_FLAGS := -O0 -g
 
 # Detect the Operating System
 UNAME_S := $(shell uname -s)
