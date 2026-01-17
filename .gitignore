@@ -2,3 +2,5 @@
 *.so
 *.dSYM
 test_runner
+.lldbinit
+.gdbinit
