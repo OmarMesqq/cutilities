@@ -10,6 +10,8 @@
  * This function truncates the returned string to `maxBaseNameLength - 1` characters
  * of the basename as it has to include the null terminator.
  * 
+ * Currently, this runs at `O(N^2)`
+ * 
  * @param filepath string representing a file's path
  * @param maxBaseNameLength maximal size for basename string INCLUDING the null terminator
  */

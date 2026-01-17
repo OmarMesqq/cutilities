@@ -19,42 +19,74 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
 
   unsigned int i = 0;
   char* ptr = (char*)filepath;
+
   while (*ptr != '\0') {
     char current = *ptr;
     char next = *(ptr + 1);
+
     if (current == '/') {
-      // look-ahead
-      if (next == '\0') {
+      /**
+       * LOOK-AHEAD:
+       * Check if the current slash is at the end of the string (trailing slash)
+       * or followed by another slash.
+       */
+      if ((next == '\0') || (next == '/')) {
+        /**
+         * Edge case: The Root Path ("/")
+         * If the buffer is empty, this slash is actually the basename.
+         */
         if (basename[0] == 0) {
           basename[0] = '/';
           ++i;
         }
+
+        /**
+         * Otherwise, it's just a trailing/redundant slash.
+         * Skip it so we don't overwrite the valid basename we already found.
+         */
         ptr++;
         continue;
       }
+
+      /**
+       * We reset `basename`
+       * with `i = 0` , move to the next char (`ptr++`),
+       * and skip the current iteration as to NOT include
+       * the current slash in the buffer (`continue`)
+       */
       i = 0;
       ptr++;
       continue;
     }
+
     if (i >= (maxBaseNameLength - 1)) {
+      /**
+       * The folder names may be larger than the user provided
+       * `maxBaseNameLength`. If that's the case, I gotta
+       * check if we are truly at the string's end and the
+       * basename shall be truncated (happy path) OR
+       * if we are in an intermediate folder
+       */
       char* remainingStr = ptr;
-      unsigned char isStrOver = 1;  // assume the string really is over
+      unsigned char isStrOver = 1;  // assume the string is indeed over
       for (; *remainingStr != '\0'; remainingStr++) {
         if (*remainingStr == '/') isStrOver = 0;
       }
+
       if (isStrOver) {
         fprintf(stderr, "get_basename: basename buffer exceeded, truncating string\n");
         break;
       }
-      // fall-through
+      // string isn't over, discard whatever was parsed until basename is found
+      i = 0;
     }
+
     basename[i] = current;
     ++i;
     ptr++;
   }
 
   basename[i] = '\0';
-  fprintf(stderr, "get_basename returning: %s\n", basename);
   return basename;
 }
 
