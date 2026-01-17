@@ -129,9 +129,7 @@ void trim_leading_spaces(char* line) {
   line[i] = '\0';
 }
 
-void dump_string(char* s) {
-  printf("%s", s);
-  printf("dump_string: dumping string above...\n");
+void dump_string(const char* s) {
   char* p = s;
   while (*p != '\0') {
     printf("char: %c, %d (dec), %02x (hex)\n", *p, *p, *p);

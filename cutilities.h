@@ -6,12 +6,12 @@
 /**
  * Takes an Unix absolute or relative file path and
  * returns the its basename as a heap allocated string.
- * 
+ *
  * This function truncates the returned string to `maxBaseNameLength - 1` characters
  * of the basename as it has to include the null terminator.
- * 
+ *
  * Runs in O(N^2)
- * 
+ *
  * @param filepath string representing a file's path
  * @param maxBaseNameLength maximal size for basename string INCLUDING the null terminator
  */
@@ -19,9 +19,9 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength);
 
 /**
  * Trims leading spaces (' ')/ 32 (dec)/ 0x20 (hex).
- * 
+ *
  * Runs in O(n)
- * 
+ *
  * SIDE-EFFECT: modifies `line` in-place
  */
 void trim_leading_spaces(char* line);
@@ -30,16 +30,18 @@ void trim_leading_spaces(char* line);
  * Prints the entire string `s`, followed by a character-by-character
  * dump of its contents (as character, decimal, and hex).
  */
-void dump_string(char* s);
+void dump_string(const char* s);
 
 /**
  * Converts the null-terminated string `str` to an integer in
  * a single pass.
- * 
+ *
  * Runs in O(n)
- * 
+ *
  * WARNING: Doesn't correctly handle broken inputs such as those with space, letters
  * and overflowing integers
+ *
+ * SIDE-EFFECT: modifies `str`
  */
 int string_to_int(char* str);
 
@@ -47,6 +49,7 @@ int string_to_int(char* str);
  * Writes in the buffer `code` at offset `pos` a base 10 signed `integer`
  * (32 bits on x86-64) in Little Endian hexadecimal.
  * Used for immediate values and jump offsets.
+ *
  * SIDE-EFFECT: modifies `pos` as the buffer is traversed
  */
 void write_integer_le(unsigned char code[], int* pos, int integer);
@@ -59,7 +62,7 @@ unsigned long get_number_width(unsigned long ul);
 
 /**
  * Takes a non-negative whole number `ul` and its `width`
- * and returns the former as a heap-allocated string. 
+ * and returns the former as a heap-allocated string.
  */
 char* numtoi(unsigned long ul, unsigned long width);
 
