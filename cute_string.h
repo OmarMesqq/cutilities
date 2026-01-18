@@ -1,6 +1,10 @@
 #ifndef CUTE_STRING_H
 #define CUTE_STRING_H
 
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+
 int stonum_1(char* s, int base);
 
 /**

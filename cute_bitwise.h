@@ -1,6 +1,9 @@
 #ifndef CUTE_BITWISE_H
 #define CUTE_BITWISE_H
 
+#include <stdlib.h>
+#include <stdio.h>
+
 /**
  * Classic swap implementation with XOR.
  * Nowadays this is pendantic and a little useless

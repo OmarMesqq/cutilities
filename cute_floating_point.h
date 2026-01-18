@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 #include <limits.h>
+#include <stdio.h>
+#include <math.h>
 
 //TODO:
 #define getsig(x) ((x) >> 31 & 1)
