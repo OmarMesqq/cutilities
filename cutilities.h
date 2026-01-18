@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "cute_bitwise.h"
+#include "cute_floating_point.h"
+#include "cute_memory.h"
+#include "cute_string.h"
+
 /**
  * Takes an Unix absolute or relative file path and
  * returns the its basename as a heap allocated string.

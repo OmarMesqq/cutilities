@@ -1,5 +1,5 @@
-SRC := cutilities.c
-LIB_OBJECT_FILE := cutilities.o
+SRC := cutilities.c $(wildcard cute_*.c)
+OBJ := $(SRC:.c=.o)
 SHARED_LIBRARY_FILE := libcutilities.so
 
 TEST_SRC := test/test_main.c
@@ -26,13 +26,19 @@ ifeq ($(UNAME_S),Darwin)
 	LEAKS_CMD := MallocNanoZone=0 leaks --atExit -- ./$(TEST_BINARY)
 endif
 
-release:
-	gcc $(WARNINGS) $(RELEASE_FLAGS) -c -fPIC $(SRC) -o $(LIB_OBJECT_FILE)
-	gcc $(WARNINGS) $(RELEASE_FLAGS) $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(LIB_OBJECT_FILE)
+# Pattern rule to generate object files for every source file
+%.o: %.c
+	gcc $(WARNINGS) $(CFLAGS) -c -fPIC $< -o $@
 
-debug:
-	gcc $(WARNINGS) $(DEBUG_FLAGS) -c -fPIC $(SRC) -o $(LIB_OBJECT_FILE)
-	gcc $(WARNINGS) $(DEBUG_FLAGS) $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(LIB_OBJECT_FILE)
+release: CFLAGS := $(RELEASE_FLAGS)
+release: $(OBJ)
+	gcc $(WARNINGS) $(RELEASE_FLAGS) $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(OBJ)
+	rm *.o
+
+debug: CFLAGS := $(DEBUG_FLAGS)
+debug: $(OBJ)
+	gcc $(WARNINGS) $(DEBUG_FLAGS) $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(OBJ)
+	rm *.o
 
 test: debug
 	gcc $(WARNINGS) $(DEBUG_FLAGS) $(TEST_SRC) $(TEST_INCLUDES) $(TEST_LDFLAGS) -o $(TEST_BINARY)
@@ -42,4 +48,4 @@ leaks: test
 	$(LEAKS_CMD)
 
 clean:
-	rm -rf $(LIB_OBJECT_FILE) $(SHARED_LIBRARY_FILE) $(TEST_BINARY) $(TEST_BINARY).dSYM
+	rm -rf $(SHARED_LIBRARY_FILE) $(TEST_BINARY) $(TEST_BINARY).dSYM
