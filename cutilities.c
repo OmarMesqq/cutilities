@@ -1,6 +1,5 @@
 #include "cutilities.h"
 
-
 char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
   if (!filepath) {
     fprintf(stderr, "get_basename: no filepath provided to extract a file basename!\n");
