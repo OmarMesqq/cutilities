@@ -120,7 +120,21 @@ int main(void) {
   assert(actualBaseName != NULL);
   assert(strcmp(actualBaseName, "folder") == 0);
   free(actualBaseName);
+
+
+  /** odd_ones tests */
+  unsigned int x = 0;
+  assert(odd_ones(x) == 0);
   
+  x = 1;
+  assert(odd_ones(x) == 1);
+
+  x = 8;
+  assert(odd_ones(x) == 1);
+
+  x = 15;
+  assert(odd_ones(x) == 0);
+
   printf("All Cutilities tests passed!\n");
   return 0;
 }
