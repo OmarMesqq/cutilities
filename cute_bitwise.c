@@ -11,7 +11,7 @@ int odd_ones(unsigned int x) {
   for (int i = 31; i >= 0; i--) {
     if ((x >> i & 1) == 1) {
       // rastreia a paridade da quantidade de bits 1 usando XOR como "liga-desliga"
-      bitAccumulator ^= 0b1;
+      bitAccumulator ^= 1;
     }
   }
 
