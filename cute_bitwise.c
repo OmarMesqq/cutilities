@@ -7,30 +7,24 @@ void inplace_swap(int* x, int* y) {
 }
 
 int odd_ones(unsigned int x) {
-  unsigned bitAccumulator = 0;
+  unsigned parity = 0;
   for (int i = 31; i >= 0; i--) {
     if ((x >> i & 1) == 1) {
-      // rastreia a paridade da quantidade de bits 1 usando XOR como "liga-desliga"
-      bitAccumulator ^= 1;
+      // tracks parity of ON bits using XOR as a "light switch"
+      parity ^= 1;
     }
   }
 
-  if (bitAccumulator == 0) {
-    // x tem quantidade par de bits 1
+  if (parity == 0) {
+    // even
     return 0;
   }
-  // x tem quantidade impar de bits 1
+  // odd
   return 1;
 }
 
 unsigned char switch_byte(unsigned char x) {
-  unsigned char msHalf, lsHalf;
-  // empurra os 4 bits mais significativos (msHalf) para os 4 inferiores
-  msHalf = x >> 4;
-  // zera os 4 bits superiores e empurra os menos significativos (lsHalf) para os superiores
-  lsHalf = x << 4;
-  unsigned char joined = msHalf | lsHalf;
-  return joined;
+  return ((x << 4 ) & 0xF0) | ((x >> 4) & 0x0F);
 }
 
 unsigned char rotate_left(unsigned char x, int n) {
@@ -40,8 +34,8 @@ unsigned char rotate_left(unsigned char x, int n) {
   return c1 | c2;
 }
 
-int xbyte(unsigned int word, int bytenum) {
-  signed char byte = 0;  // os valores empacotados ocupam no máximo 1 byte e tem sinal
+int xbyte_math(unsigned int word, int bytenum) {
+  signed char byte = 0;  // "packed" values are signed and are at most 1-byte wide
   unsigned int mask = 0x000000FF;
 
   switch (bytenum) {
@@ -61,14 +55,14 @@ int xbyte(unsigned int word, int bytenum) {
       byte = word & mask;
       break;
     default:
-      printf("Bytes vão de 0 a 3!\n");
+      fprintf(stderr, "Valid indexes for bytes of an integer are 0 through 3 only. Got: %d\n", bytenum);
       exit(1);
   }
   printf("%08x  %d\n", byte, byte);
   return byte;
 }
 
-int xbyte2(unsigned int word, int bytenum) {
+int xbyte_endianess(unsigned int word, int bytenum) {
   /**
    * Anonymous union for extracting
    * bytes from an unsigned integer
@@ -78,7 +72,7 @@ int xbyte2(unsigned int word, int bytenum) {
     char v[4];
   } PackedUnion;
 
-  signed char byte = 0;  // os valores empacotados ocupam no máximo 1 byte e tem sinal
+  signed char byte = 0;  // "packed" values are signed and are at most 1-byte wide
   PackedUnion pu;
   pu.i = word;
 
@@ -96,7 +90,7 @@ int xbyte2(unsigned int word, int bytenum) {
       byte = pu.v[3];
       break;
     default:
-      printf("Bytes vão de 0 a 3!\n");
+      fprintf(stderr, "Valid indexes for bytes of an integer are 0 through 3 only. Got: %d\n", bytenum);
       exit(1);
   }
   printf("%08x  %d\n", byte, byte);

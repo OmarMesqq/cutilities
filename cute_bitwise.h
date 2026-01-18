@@ -11,25 +11,45 @@
  * This is merely an educational tool implemented following
  * the theory at
  * https://www.inf.puc-rio.br/~inf1018/docs/bitwise.pdf
- * 
  */
 void inplace_swap(int* x, int* y);
 
+/**
+ * Returns 1 if count of ON bits in 
+ * the number `x` is odd. Otherwise,
+ * returns 0.
+ */
 int odd_ones(unsigned int x);
 
+/**
+ * Swaps the high and low nibbles of a byte
+ * (8 bits).
+ */
 unsigned char switch_byte(unsigned char x);
 
 /**
- * Circular left shift
+ * Does a **circular left shift** on
+ * byte `x` by `n` bits.
  */
 unsigned char rotate_left(unsigned char x, int n);
 
 /**
- * extrai byte indicado e retorna valor
- * inteiro correspondente (32 bits) com sinal
+ * Extracts the value of the byte at index `bytenum`
+ * on the whole number `word` using bitwise math.
+ * Returns it implicitly cast to 32-bit signed integer.
  */
-int xbyte(unsigned int word, int bytenum);
+int xbyte_math(unsigned int word, int bytenum);
 
-int xbyte2(unsigned int word, int bytenum);
+/**
+ * Extracts the value of the byte at index `bytenum`
+ * on the whole number `word` leveraging unions
+ * and Little Endian memory layout.
+ * 
+ * Returns the value implicitly cast to 32-bit signed integer.
+ * 
+ * WARNING: Portability note: this will only work
+ * on Little Endian machines.
+ */
+int xbyte_endianess(unsigned int word, int bytenum);
 
 #endif

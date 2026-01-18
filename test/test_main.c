@@ -145,7 +145,11 @@ int main(void) {
   str[5] = 'H';
   str[6] = '!';
   str[7] = '\0';
-  dump_string(str); 
+  dump_string(str);
+
+  /** switch_byte tests */
+  unsigned char byte = 171; // 0xAB
+  assert(switch_byte(byte) == 186); // should be 0xBA now
 
   printf("All Cutilities tests passed!\n");
   return 0;
