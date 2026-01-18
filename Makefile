@@ -6,7 +6,7 @@ TEST_SRC := test/test_main.c
 TEST_BINARY := test_runner
 LIB_PATH := $(shell pwd)
 TEST_INCLUDES := -I$(LIB_PATH)
-TEST_LDFLAGS  := -L$(LIB_PATH) -lcutilities -Wl,-rpath,$(LIB_PATH)
+TEST_LDFLAGS  := -lm -L$(LIB_PATH) -lcutilities -Wl,-rpath,$(LIB_PATH)
 
 WARNINGS := -Wall -Wextra -Winline -pedantic
 RELEASE_FLAGS := -O3
