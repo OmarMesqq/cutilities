@@ -1,6 +1,5 @@
 #include "cutilities.h"
 
-#include <stdlib.h>
 
 char* get_basename(const char* filepath, unsigned maxBaseNameLength) {
   if (!filepath) {

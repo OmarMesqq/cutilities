@@ -2,6 +2,7 @@
 #define CUTILITIES_H
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /**
  * Takes an Unix absolute or relative file path and
