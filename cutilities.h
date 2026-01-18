@@ -33,11 +33,6 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength);
 void trim_leading_spaces(char* line);
 
 /**
- * Does a character-by-character dump of a string (as character, decimal, and hex).
- */
-void dump_string(const char* s);
-
-/**
  * Converts the null-terminated string to an integer in a single pass.
  *
  * Runs in O(n)

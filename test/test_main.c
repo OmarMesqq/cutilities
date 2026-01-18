@@ -135,6 +135,16 @@ int main(void) {
   x = 15;
   assert(odd_ones(x) == 0);
 
+
+  char str[6];
+  str[0] = '\n';
+  str[1] = '\t';
+  str[2] = '\r';
+  str[3] = '\b';
+  str[4] = ' ';
+  str[5] = '\0';
+  dump_string(str); 
+
   printf("All Cutilities tests passed!\n");
   return 0;
 }

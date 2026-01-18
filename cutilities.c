@@ -115,14 +115,6 @@ void trim_leading_spaces(char* line) {
   line[i] = '\0';
 }
 
-void dump_string(const char* s) {
-  while (*s != '\0') {
-    printf("char: %c, %d (dec), %02x (hex)\n", *s, *s, *s);
-    s++;
-  }
-  printf("\n");
-}
-
 int string_to_int(const char* s) {
   int isNegative = 0;
   // is first char a minus sign?

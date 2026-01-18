@@ -46,3 +46,11 @@ void print_byte(unsigned char x) {
   }
   printf("\n");
 }
+
+void dump_string(const char* s) {
+  while (*s != '\0') {
+    printf("char: %c, %d (dec), %02x (hex)\n", *s, *s, *s);
+    s++;
+  }
+  printf("\n");
+}
