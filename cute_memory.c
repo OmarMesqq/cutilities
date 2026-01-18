@@ -48,8 +48,39 @@ void print_byte(unsigned char x) {
 }
 
 void dump_string(const char* s) {
+  // Left align text for readability
+  printf("%-10s | %-7s | %-11s\n", "CHARACTER", "DECIMAL", "HEXADECIMAL");
+  printf("-------------------------------------\n");
+
   while (*s != '\0') {
-    printf("char: %c, %d (dec), %02x (hex)\n", *s, *s, *s);
+    char display_str[8];
+
+    switch (*s) {
+      case '\n':
+        strcpy(display_str, "\\n");
+        break;
+      case '\t':
+        strcpy(display_str, "\\t");
+        break;
+      case '\r':
+        strcpy(display_str, "\\r");
+        break;
+      case '\b':
+        strcpy(display_str, "\\b");
+        break;
+      case ' ':
+        strcpy(display_str, "' '");
+        break;
+      default:
+        sprintf(display_str, "%c", *s);
+        break;
+    }
+
+    // %-10s : Left-align string within 10 spaces
+    // %7d   : Right-align integer within 7 spaces
+    // %02x  : Print at least 2 digits of hex (e.g., 0A instead of A)
+    printf("%-10s | %7d | 0x%x\n", display_str, (unsigned char)*s, (unsigned char)*s);
+
     s++;
   }
   printf("\n");

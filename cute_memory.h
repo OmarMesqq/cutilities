@@ -2,6 +2,7 @@
 #define CUTE_MEMORY_H
 
 #include <stdio.h>
+#include <string.h>
 
 int is_little(void);
 
