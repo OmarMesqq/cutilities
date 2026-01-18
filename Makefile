@@ -6,7 +6,7 @@ TEST_SRC := test/test_main.c
 TEST_BINARY := test_runner
 LIB_PATH := $(shell pwd)
 TEST_INCLUDES := -I$(LIB_PATH)
-TEST_LDFLAGS  := -L$(LIB_PATH) -lcutilities -Wl,-rpath,$(LIB_PATH) -lm
+TEST_LDFLAGS  := -L$(LIB_PATH) -lcutilities -Wl,-rpath,$(LIB_PATH)
 
 WARNINGS := -Wall -Wextra -Winline -pedantic
 RELEASE_FLAGS := -O3
@@ -32,12 +32,12 @@ endif
 
 release: CFLAGS := $(RELEASE_FLAGS)
 release: $(OBJ)
-	gcc $(WARNINGS) $(RELEASE_FLAGS) $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(OBJ)
+	gcc $(WARNINGS) $(RELEASE_FLAGS) $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(OBJ) -lm
 	rm *.o
 
 debug: CFLAGS := $(DEBUG_FLAGS)
 debug: $(OBJ)
-	gcc $(WARNINGS) $(DEBUG_FLAGS) $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(OBJ)
+	gcc $(WARNINGS) $(DEBUG_FLAGS) $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(OBJ) -lm
 	rm *.o
 
 test: debug
