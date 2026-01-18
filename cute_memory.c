@@ -14,7 +14,7 @@ int is_little(void) {
 }
 
 void dump(const void* p, int n) {
-  unsigned char* p1 = p;
+  const unsigned char* p1 = p;
   while (n--) {
     printf("%p - %02x\n", p1, *p1);
     p1++;
@@ -22,7 +22,7 @@ void dump(const void* p, int n) {
 }
 
 void print_bytes(const void* p, int n) {
-  unsigned char* p1 = p;
+  const unsigned char* p1 = p;
 
   for (int i = 0; i < n; i++) {
     // High nibble: shift right by 4 (since its unsigned, it safely does logical shift instead of arithmetic one)
