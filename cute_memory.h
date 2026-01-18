@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <string.h>
 
+/**
+ * Returns 1 if machine is Little Endian,
+ * 0 if Big Endian (fallback).
+ */
 int is_little(void);
 
 void dump(const void* p, int n);

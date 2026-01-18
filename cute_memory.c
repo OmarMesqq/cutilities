@@ -1,14 +1,14 @@
 #include "cute_memory.h"
 
 int is_little(void) {
-  unsigned short s = 256;  // 0x0100
-  unsigned char* ptr = (unsigned char*)&s;
+  unsigned short s = 43981;  // 0xABCD
+  const unsigned char* ps = (const unsigned char*)&s;
 
-  // least significant byte first?
-  if (ptr[0] == 0x00) {
-    // Little Endian
+  if (*ps == 0xCD) {
+    // least significant byte comes first -> Little Endian
     return 1;
   }
+
   // Big Endian
   return 0;
 }
