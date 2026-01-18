@@ -1,3 +1,5 @@
+#include "cute_bitwise.h"
+
 void inplace_swap(int* x, int* y) {
   *x = *x ^ *y;
   *y = *x ^ *y;
