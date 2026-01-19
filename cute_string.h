@@ -13,14 +13,6 @@ int stoi_1(char* s, int base);
  */
 int stoi_2(char* s, int b);
 
-void itos(char* s, int num, int base);
-
-/**
- * Takes a non-negative whole number `ul` and its `width`
- * and returns the former as a heap-allocated string.
- */
-char* ultos(unsigned long ul, unsigned long width);
-
 /**
  * Converts the null-terminated string to an integer in a single pass.
  *
@@ -32,5 +24,13 @@ char* ultos(unsigned long ul, unsigned long width);
  * @param s null-terminated string representing a whole number (`int`)
  */
 int stoi(const char* s);
+
+void itos(char* s, int num, int base);
+
+/**
+ * Takes a non-negative whole number `ul` and its `width`
+ * and returns the former as a heap-allocated string.
+ */
+char* ultos(unsigned long ul, unsigned long width);
 
 #endif
