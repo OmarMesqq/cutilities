@@ -1,12 +1,14 @@
-#include "../cutilities.h"
 #include <assert.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "../cutilities.h"
 
 #define MAX_FILE_BASENAME_LEN 200
 #define SMALL_MAX_FILE_BASENAME_LEN 5
 
 int main(void) {
+  /** --------------- STRING TESTS --------------- */
   /** get_basename tests */
 
   char* filePath = NULL;
@@ -87,7 +89,7 @@ int main(void) {
   actualBaseName = get_basename(filePath, maxBaseNameLength);
   assert(actualBaseName != NULL);
   assert(strlen(actualBaseName) < SMALL_MAX_FILE_BASENAME_LEN);
-  assert(strcmp(actualBaseName, "very") == 0); // 4 chars + NULL terminator
+  assert(strcmp(actualBaseName, "very") == 0);  // 4 chars + NULL terminator
   free(actualBaseName);
 
   // 12. Empty String
@@ -121,7 +123,7 @@ int main(void) {
   assert(strcmp(actualBaseName, "folder") == 0);
   free(actualBaseName);
 
-
+  /** --------------- BITWISE TESTS --------------- */
   /** odd_ones tests */
   unsigned int x = 0;
   assert(odd_ones(x) == 0);
@@ -135,6 +137,12 @@ int main(void) {
   x = 15;
   assert(odd_ones(x) == 0);
 
+  /** switch_byte tests */
+  unsigned char byte = 171;          // 0xAB
+  assert(switch_byte(byte) == 186);  // should be 0xBA now
+
+
+  /** --------------- MEMORY TESTS --------------- */
   /** dump_string tests */
   char str[8];
   str[0] = '\n';

@@ -10,6 +10,8 @@
 #include "cute_string.h"
 
 /**
+ * TODO: move this to `cute_string`
+ * 
  * Takes an Unix absolute or relative file path and
  * returns the its basename as a heap allocated string.
  *
