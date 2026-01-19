@@ -38,7 +38,6 @@ release: $(OBJ)
 debug: CFLAGS := $(DEBUG_FLAGS)
 debug: $(OBJ)
 	gcc $(WARNINGS) $(DEBUG_FLAGS) $(SHARED_FLAGS) -o $(SHARED_LIBRARY_FILE) $(OBJ) -lm
-	rm *.o
 
 test: debug
 	gcc $(WARNINGS) $(DEBUG_FLAGS) $(TEST_SRC) $(TEST_INCLUDES) $(TEST_LDFLAGS) -o $(TEST_BINARY)
@@ -48,4 +47,4 @@ leaks: test
 	$(LEAKS_CMD)
 
 clean:
-	rm -rf $(SHARED_LIBRARY_FILE) $(TEST_BINARY) $(TEST_BINARY).dSYM
+	rm -rf $(SHARED_LIBRARY_FILE) $(TEST_BINARY) $(TEST_BINARY).dSYM $(wildcard cute_*.o)
