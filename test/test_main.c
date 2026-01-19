@@ -165,6 +165,10 @@ int main(void) {
   printf("--- Running dump_nibbles() on 0x1A2B3C4D ---\n");
   dump_nibbles(&num, sizeof(num));
 
+  printf("--- Running dump_nibbles() on 0xAB ---\n");
+  unsigned char c = 0xAB;
+  dump_nibbles(&c, sizeof(c));
+
   printf("--- Running dump_bits() on a single char 'A' (0x41) ---\n");
   dump_bits('A');
 

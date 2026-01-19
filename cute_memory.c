@@ -21,19 +21,17 @@ void dump(const void* p, int n) {
   }
 }
 
-// TODO: fix variable shadowing
 void dump_nibbles(const void* p, int n) {
   const unsigned char* p1 = p;
 
   for (int i = 0; i < n; i++) {
-    // High nibble: shift right by 4 (since its unsigned, it safely does logical shift instead of arithmetic one)
-    // Low nibble: mask with 0x0F.
-    printf(" %02x   %02x  \n", *p1 >> 4, *p1 & 0x0F);
-    for (int i = 7; i >= 0; i--) {
-      if (i == 3) {
-        printf(" ");
-      }
-      printf("%d", (*p1 >> i) & 1);
+    // Print nibbles
+    printf(" %02x   %02x\n", ((*p1 >> 4) & 0x0F), (*p1 & 0x0F));
+
+    // Print bits of that nibble
+    for (int j = 7; j >= 0; j--) {
+      if (j == 3) printf(" ");
+      printf("%d", (*p1 >> j) & 1);
     }
     p1++;
     printf("\n\n");
