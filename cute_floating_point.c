@@ -1,5 +1,8 @@
 #include "cute_floating_point.h"
 
+#define FLOAT_EXPONENT_BIAS 127
+#define DOUBLE_EXPONENT_BIAS 1023
+
 typedef union {
   float f;
   unsigned int i;
@@ -30,14 +33,14 @@ float float2(float f) {
   exp += 1;
 
   /**
-   * Shift 0xff to start at bit 22 (exponent start) and NOT it.
+   * Shift 0xff to start at bit 23 (exponent start) and NOT it.
    * After ANDing, we clear the previous exponent
    */
   u1 &= ~(0xff << 23);
 
   /**
    * Update our exponent by ORing 
-   * our new exponent shifted to its position (bit 22)
+   * our new exponent shifted to its position (bit 23)
    */
   u1 |= (exp << 23);
 
@@ -82,10 +85,12 @@ int float2int(float f) {
   mantissaBits |= (1 << 23);  // adds implicit 1 (IEEE 754)
   mantissaBits |= m;
 
+  // TODO: stop using math.h here
+  
   // Divide by 2^23 as we treat mantissaBits as an integer right shifted by 23 bits
   float trueMantissa = mantissaBits / (float)pow(2, 23);
 
-  int trueExponent = e - 127;
+  int trueExponent = e - FLOAT_EXPONENT_BIAS;
 
   return (int)(pow(-1, s) * trueMantissa * pow(2, trueExponent));
 }
@@ -99,7 +104,6 @@ float int2float(int i) {
   int s;
   unsigned mantissa = 0;
   unsigned convertedInt = 0;
-  char floatBias = 127;
 
   if (i < 0) {
     s = 1;
@@ -134,7 +138,7 @@ float int2float(int i) {
     }
   }
 
-  exp += floatBias;
+  exp += FLOAT_EXPONENT_BIAS;
   convertedInt |= (s << 31);
   convertedInt |= (exp << 23);
   convertedInt |= mantissa;
@@ -174,7 +178,7 @@ double maxdouble(double a, double b) {
   uint64_t mantissaBitsA = 0;
   uint64_t mantissaBitsB = 0;
 
-  // Use 64-bit wide "1" to avoid compiler overflow warnings
+  // Use 64-bit "1" to avoid compiler overflow warnings
   mantissaBitsA |= 1ULL << 52;
   mantissaBitsB |= 1ULL << 52;
 
@@ -182,8 +186,8 @@ double maxdouble(double a, double b) {
   mantissaBitsB |= mb;
 
   // Remove bias from the `double`s to get their true exponent
-  int expA = ea - 1023;
-  int expB = eb - 1023;
+  int expA = ea - DOUBLE_EXPONENT_BIAS;
+  int expB = eb - DOUBLE_EXPONENT_BIAS;
 
   /**
    * Compare the exponents first:
