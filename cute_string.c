@@ -1,6 +1,6 @@
 #include "cute_string.h"
 
-int stonum_1(char* s, int base) {
+int stoi_1(char* s, int base) {
   int a = 0;
   for (; *s; s++) {
     if (isdigit(*s))
@@ -17,7 +17,7 @@ int stonum_1(char* s, int base) {
   return a;
 }
 
-int stonum_2(char* s, int b) {
+int stoi_2(char* s, int b) {
   int a = 0;
   for (; *s; s++) {
     if (isdigit(*s)) {
@@ -30,7 +30,7 @@ int stonum_2(char* s, int b) {
   return a;
 }
 
-void num2string(char* s, int num, int base) {
+void itos(char* s, int num, int base) {
   if (base == 10) {
     int tempNum = num;
     int i = 0;

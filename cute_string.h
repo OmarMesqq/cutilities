@@ -5,15 +5,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int stonum_1(char* s, int base);
+int stoi_1(char* s, int base);
 
 /**
  * Base 36 é a máxima que podemos
  * ter com esta quantidade de simbolos
  */
-int stonum_2(char* s, int b);
+int stoi_2(char* s, int b);
 
-void num2string(char* s, int num, int base);
+void itos(char* s, int num, int base);
 
 /**
  * Takes a non-negative whole number `ul` and its `width`
