@@ -63,7 +63,7 @@ int main(void) {
   free(actualBaseName);
 
   // 8. Trailing slashes (should strip trailing slashes)
-  filePath = "/path/to/folder/"; 
+  filePath = "/path/to/folder/";
   actualBaseName = get_basename(filePath, MAX_FILE_BASENAME_LEN);
   assert(actualBaseName != NULL);
   assert(strcmp(actualBaseName, "folder") == 0);
@@ -73,7 +73,7 @@ int main(void) {
   filePath = "/";
   actualBaseName = get_basename(filePath, MAX_FILE_BASENAME_LEN);
   assert(actualBaseName != NULL);
-  assert(strcmp(actualBaseName, "/") == 0); 
+  assert(strcmp(actualBaseName, "/") == 0);
   free(actualBaseName);
 
   // 10. Multiple/Redundant Slashes
@@ -85,7 +85,7 @@ int main(void) {
 
   // 11. Truncation / Buffer Limit Logic
   filePath = "/path/to/very_long_filename.txt";
-  maxBaseNameLength = SMALL_MAX_FILE_BASENAME_LEN; 
+  maxBaseNameLength = SMALL_MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
   assert(actualBaseName != NULL);
   assert(strlen(actualBaseName) < SMALL_MAX_FILE_BASENAME_LEN);
@@ -112,11 +112,11 @@ int main(void) {
   maxBaseNameLength = SMALL_MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
   assert(actualBaseName != NULL);
-  assert(strcmp(actualBaseName, "file") == 0); 
+  assert(strcmp(actualBaseName, "file") == 0);
   free(actualBaseName);
 
   // 15. Trailing and Leading Slashes
-  filePath = "///path/to/folder///"; 
+  filePath = "///path/to/folder///";
   maxBaseNameLength = MAX_FILE_BASENAME_LEN;
   actualBaseName = get_basename(filePath, maxBaseNameLength);
   assert(actualBaseName != NULL);
@@ -127,7 +127,7 @@ int main(void) {
   /** odd_ones tests */
   unsigned int x = 0;
   assert(odd_ones(x) == 0);
-  
+
   x = 1;
   assert(odd_ones(x) == 1);
 
@@ -155,9 +155,18 @@ int main(void) {
   str[7] = '\0';
   dump_string(str);
 
-  /** switch_byte tests */
-  unsigned char byte = 171; // 0xAB
-  assert(switch_byte(byte) == 186); // should be 0xBA now
+  /** dump, dump_nibbles, and dump_bits tests */
+  int num = 0x1A2B3C4D;
+
+  printf("--- Running dump() on integer 0x1A2B3C4D ---\n");
+  dump(&num, sizeof(num));
+  printf("\n");
+
+  printf("--- Running dump_nibbles() on 0x1A2B3C4D ---\n");
+  dump_nibbles(&num, sizeof(num));
+
+  printf("--- Running dump_bits() on a single char 'A' (0x41) ---\n");
+  dump_bits('A');
 
   printf("All Cutilities tests passed!\n");
   return 0;

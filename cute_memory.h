@@ -12,9 +12,9 @@ int is_little(void);
 
 void dump(const void* p, int n);
 
-void print_bytes(const void* p, int n);
+void dump_nibbles(const void* p, int n);
 
-void print_byte(unsigned char x);
+void dump_bits(unsigned char x);
 
 /**
  * Does a character-by-character dump of a string (as character, decimal, and hex).

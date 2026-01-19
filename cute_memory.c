@@ -21,7 +21,8 @@ void dump(const void* p, int n) {
   }
 }
 
-void print_bytes(const void* p, int n) {
+//TODO: fix variable shadowing
+void dump_nibbles(const void* p, int n) {
   const unsigned char* p1 = p;
 
   for (int i = 0; i < n; i++) {
@@ -39,7 +40,7 @@ void print_bytes(const void* p, int n) {
   }
 }
 
-void print_byte(unsigned char x) {
+void dump_bits(unsigned char x) {
   for (int i = 7; i >= 0; i--) {
     printf("%d", (x >> i) & 1);
     if (i == 4) printf(" ");
