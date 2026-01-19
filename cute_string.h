@@ -19,6 +19,6 @@ void num2string(char* s, int num, int base);
  * Takes a non-negative whole number `ul` and its `width`
  * and returns the former as a heap-allocated string.
  */
-char* utos(unsigned long ul, unsigned long width);
+char* ultos(unsigned long ul, unsigned long width);
 
 #endif

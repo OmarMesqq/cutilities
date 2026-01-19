@@ -52,13 +52,13 @@ void num2string(char* s, int num, int base) {
   }
 }
 
-char* utos(unsigned long ul, unsigned long width) {
+char* ultos(unsigned long ul, unsigned long width) {
   unsigned long d = ul;  // dividend: starts as the given number
   unsigned long r = 0;   // remainder
 
   char* str = (char*)malloc((width + 1) * sizeof(char));
   if (!str) {
-    fprintf(stderr, "utos: failed to allocate string to represent number!\n");
+    fprintf(stderr, "ultos: failed to allocate string to represent number!\n");
     return NULL;
   }
 
