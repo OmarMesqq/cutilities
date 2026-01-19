@@ -35,18 +35,6 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength);
 void trim_leading_spaces(char* line);
 
 /**
- * Writes a signed integer's bytes in Little Endian ordering
- * in a buffer at the offset pointed by `pos`.
- *
- * @param buf byte array
- * @param pos pointer to an integer marking the desired offset to write at
- * @param integer whole number whose bytes will be written
- *
- * SIDE-EFFECT: increments `pos` as the buffer is traversed
- */
-void write_integer_le(unsigned char buf[], int* pos, int integer);
-
-/**
  * Returns the "width" (amount of digits) of a
  * non-negative whole number `ul`.
  */

@@ -21,7 +21,7 @@ void dump(const void* p, int n) {
   }
 }
 
-//TODO: fix variable shadowing
+// TODO: fix variable shadowing
 void dump_nibbles(const void* p, int n) {
   const unsigned char* p1 = p;
 
@@ -85,4 +85,15 @@ void dump_string(const char* s) {
     s++;
   }
   printf("\n");
+}
+
+void write_integer_le(unsigned char buf[], int* pos, int integer) {
+  buf[*pos] = integer & 0xFF;
+  (*pos)++;
+  buf[*pos] = (integer >> 8) & 0xFF;
+  (*pos)++;
+  buf[*pos] = (integer >> 16) & 0xFF;
+  (*pos)++;
+  buf[*pos] = (integer >> 24) & 0xFF;
+  (*pos)++;
 }

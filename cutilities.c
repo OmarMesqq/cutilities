@@ -115,17 +115,6 @@ void trim_leading_spaces(char* line) {
   line[i] = '\0';
 }
 
-void write_integer_le(unsigned char buf[], int* pos, int integer) {
-  buf[*pos] = integer & 0xFF;
-  (*pos)++;
-  buf[*pos] = (integer >> 8) & 0xFF;
-  (*pos)++;
-  buf[*pos] = (integer >> 16) & 0xFF;
-  (*pos)++;
-  buf[*pos] = (integer >> 24) & 0xFF;
-  (*pos)++;
-}
-
 unsigned long get_number_width(unsigned long ul) {
   unsigned long width = 0;
   unsigned long q = 0;   // quotient
