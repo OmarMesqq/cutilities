@@ -66,7 +66,7 @@ unsigned long get_number_width(unsigned long ul);
  * Takes a non-negative whole number `ul` and its `width`
  * and returns the former as a heap-allocated string.
  */
-char* numtoi(unsigned long ul, unsigned long width);
+char* utos(unsigned long ul, unsigned long width);
 
 /**
  * On success, returns the size in bytes of a file in persistent storage.
