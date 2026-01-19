@@ -84,3 +84,30 @@ char* ultos(unsigned long ul, unsigned long width) {
   str[width] = '\0';
   return str;
 }
+
+int stoi(const char* s) {
+  int isNegative = 0;
+  // is first char a minus sign?
+  if (*s == '-') {
+    isNegative = 1;
+    s++;
+  }
+
+  int num = 0;
+  int digit = 0;
+
+  while (*s != '\0') {
+    // subtract the value of the digit char from 0 in ASCII table, getting its true value
+    digit = *s - '0';
+    // each new digit "adds" another power of 10 to the overall number
+    num *= 10;
+    num += digit;
+    s++;
+  }
+
+  if (isNegative) {
+    num *= -1;
+  }
+
+  return num;
+}

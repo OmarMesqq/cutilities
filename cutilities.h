@@ -35,18 +35,6 @@ char* get_basename(const char* filepath, unsigned maxBaseNameLength);
 void trim_leading_spaces(char* line);
 
 /**
- * Converts the null-terminated string to an integer in a single pass.
- *
- * Runs in O(n)
- *
- * WARNING: Doesn't correctly handle broken inputs such as those with space, letters
- * and overflowing integers
- *
- * @param s null-terminated string representing a whole number (`int`)
- */
-int stoi(const char* s);
-
-/**
  * Writes a signed integer's bytes in Little Endian ordering
  * in a buffer at the offset pointed by `pos`.
  *

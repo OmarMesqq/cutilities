@@ -1,8 +1,8 @@
 #ifndef CUTE_STRING_H
 #define CUTE_STRING_H
 
-#include <stdio.h>
 #include <ctype.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 int stonum_1(char* s, int base);
@@ -20,5 +20,17 @@ void num2string(char* s, int num, int base);
  * and returns the former as a heap-allocated string.
  */
 char* ultos(unsigned long ul, unsigned long width);
+
+/**
+ * Converts the null-terminated string to an integer in a single pass.
+ *
+ * Runs in O(n)
+ *
+ * WARNING: Doesn't correctly handle broken inputs such as those with space, letters
+ * and overflowing integers
+ *
+ * @param s null-terminated string representing a whole number (`int`)
+ */
+int stoi(const char* s);
 
 #endif

@@ -115,33 +115,6 @@ void trim_leading_spaces(char* line) {
   line[i] = '\0';
 }
 
-int stoi(const char* s) {
-  int isNegative = 0;
-  // is first char a minus sign?
-  if (*s == '-') {
-    isNegative = 1;
-    s++;
-  }
-
-  int num = 0;
-  int digit = 0;
-
-  while (*s != '\0') {
-    // subtract the value of the digit char from 0 in ASCII table, getting its true value
-    digit = *s - '0';
-    // each new digit "adds" another power of 10 to the overall number
-    num *= 10;
-    num += digit;
-    s++;
-  }
-
-  if (isNegative) {
-    num *= -1;
-  }
-
-  return num;
-}
-
 void write_integer_le(unsigned char buf[], int* pos, int integer) {
   buf[*pos] = integer & 0xFF;
   (*pos)++;
