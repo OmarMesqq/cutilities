@@ -63,12 +63,6 @@ void write_integer_le(unsigned char buf[], int* pos, int integer);
 unsigned long get_number_width(unsigned long ul);
 
 /**
- * Takes a non-negative whole number `ul` and its `width`
- * and returns the former as a heap-allocated string.
- */
-char* utos(unsigned long ul, unsigned long width);
-
-/**
  * On success, returns the size in bytes of a file in persistent storage.
  * On failure, `-1`
  *

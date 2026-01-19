@@ -182,39 +182,6 @@ unsigned long get_number_width(unsigned long ul) {
   return width;
 }
 
-char* utos(unsigned long ul, unsigned long width) {
-  unsigned long d = ul;  // dividend: starts as the given number
-  unsigned long r = 0;   // remainder
-
-  char* str = (char*)malloc((width + 1) * sizeof(char));
-  if (!str) {
-    fprintf(stderr, "utos: failed to allocate string to represent number!\n");
-    return NULL;
-  }
-
-  int i = width - 1;
-
-  /**
-   * Once again, every number has at least one digit, so do...while is the way to go.
-   * Loop terminates when number is entirely "chopped down" i.e dividend is zero.
-   *
-   * Using the fact that numbers are represented in base 10, we extract the individual digits
-   * by getting the remainders of divisions of the first/previous dividends by 10.
-   *
-   * The digits are obtained right to left (least to most significant). Therefore,
-   * we write to this string in the reverse order of the divisions.
-   */
-  do {
-    r = d % 10;
-    str[i] = r + '0';  // get higher digits as chars by summing the value of the digit itself to zero's ASCII
-    --i;               // start at the string's end, keep traversing backwards
-    d = d / 10;
-  } while (d != 0);
-
-  str[width] = '\0';
-  return str;
-}
-
 long get_filesize(FILE* f) {
   fseek(f, 0, SEEK_END);
   long length = ftell(f);
