@@ -1,7 +1,5 @@
 #include "cute_string.h"
 
-static unsigned long get_number_width(unsigned long ul);
-
 int stoi_1(char* s, int base) {
   int a = 0;
   for (; *s; s++) {
@@ -79,6 +77,35 @@ void itos(char* s, int num, int base) {
     }
     s[i] = '\0';
   }
+}
+
+unsigned long get_number_width(unsigned long ul) {
+  unsigned long width = 0;
+  unsigned long q = 0;   // quotient
+  unsigned long d = ul;  // dividend: starts as the given number
+
+  /**
+   * Every whole number >= 0, has at least one digit,
+   * so a `do...while` seems appropriate as
+   * the width should be 1 at the minimum.
+   *
+   * Loop termination condition is whether the dividend reaches zero.
+   * As such, right after considering that a number has at least one digit (`++width`),
+   * we get the quotient of the first or previous number by 10, and set
+   * the next dividend as it.
+   *
+   * The number 10 has this cool feature that allows breaking down the number in its digits
+   * as we count in decimal. To get a number's width we simply count how many iterations
+   * it takes to "walk through" all the digits - eventually we'll get a single digit
+   * number that divided by 10 yields 0, thus breaking the loop.
+   */
+  do {
+    ++width;
+    q = d / 10;
+    d = q;
+  } while (d != 0);
+
+  return width;
 }
 
 char* ultos(unsigned long ul, unsigned long width) {
@@ -227,38 +254,4 @@ void trim_leading_spaces(char* line) {
 
   // "discard" remaining bytes at end of string
   line[i] = '\0';
-}
-
-/**
- * TODO: turn this static
- * Returns the "width" (amount of digits) of a
- * non-negative whole number `ul`.
- */
-static unsigned long get_number_width(unsigned long ul) {
-  unsigned long width = 0;
-  unsigned long q = 0;   // quotient
-  unsigned long d = ul;  // dividend: starts as the given number
-
-  /**
-   * Every whole number >= 0, has at least one digit,
-   * so a `do...while` seems appropriate as
-   * the width should be 1 at the minimum.
-   *
-   * Loop termination condition is whether the dividend reaches zero.
-   * As such, right after considering that a number has at least one digit (`++width`),
-   * we get the quotient of the first or previous number by 10, and set
-   * the next dividend as it.
-   *
-   * The number 10 has this cool feature that allows breaking down the number in its digits
-   * as we count in decimal. To get a number's width we simply count how many iterations
-   * it takes to "walk through" all the digits - eventually we'll get a single digit
-   * number that divided by 10 yields 0, thus breaking the loop.
-   */
-  do {
-    ++width;
-    q = d / 10;
-    d = q;
-  } while (d != 0);
-
-  return width;
 }

@@ -28,6 +28,12 @@ int stoi(const char* s);
 void itos(char* s, int num, int base);
 
 /**
+ * Returns the "width" (amount of digits) of a
+ * non-negative whole number `ul`.
+ */
+unsigned long get_number_width(unsigned long ul);
+
+/**
  * Takes a non-negative whole number `ul` and its `width`
  * and returns the former as a heap-allocated string.
  */
