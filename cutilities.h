@@ -44,7 +44,7 @@ void trim_leading_spaces(char* line);
  *
  * @param s null-terminated string representing a whole number (`int`)
  */
-int string_to_int(const char* s);
+int stoi(const char* s);
 
 /**
  * Writes a signed integer's bytes in Little Endian ordering

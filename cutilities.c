@@ -115,7 +115,7 @@ void trim_leading_spaces(char* line) {
   line[i] = '\0';
 }
 
-int string_to_int(const char* s) {
+int stoi(const char* s) {
   int isNegative = 0;
   // is first char a minus sign?
   if (*s == '-') {
