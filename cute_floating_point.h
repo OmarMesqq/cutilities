@@ -25,6 +25,6 @@ float float2(float f);
 int float2int(float f);
 float int2float(int i);
 double maxdouble(double a, double b);
-void print_mantissa(uint32_t mantissa);
+void dump_mantissa_bits(uint32_t mantissa);
 
 #endif

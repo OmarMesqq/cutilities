@@ -86,7 +86,7 @@ int float2int(float f) {
   mantissaBits |= m;
 
   // TODO: stop using math.h here
-  
+
   // Divide by 2^23 as we treat mantissaBits as an integer right shifted by 23 bits
   float trueMantissa = mantissaBits / (float)pow(2, 23);
 
@@ -228,7 +228,7 @@ double maxdouble(double a, double b) {
   return a;
 }
 
-void print_mantissa(uint32_t mantissa) {
+void dump_mantissa_bits(uint32_t mantissa) {
   for (int i = 22; i >= 0; i--) {
     printf("%d", (mantissa >> i) & 1);
     if (i % 4 == 0) {
