@@ -10,10 +10,34 @@
  */
 int is_little(void);
 
+/**
+ * Does a byte-by-byte dump of the value pointed by `p`
+ * showing `<address> - <value of byte>`
+ * 
+ * The amount of bytes to dump is ruled by `n` (usually
+ * the `sizeof` of the data type)
+ */
 void dump(const void* p, int n);
 
+/**
+ * Dumps `n` bytes of the value pointed by `p`
+ * displaying the high and low nibbles of that byte
+ * and their binary representation below.
+ * 
+ * Example:
+```
+  04    0d
+0100  1101
+```
+ */
 void dump_nibbles(const void* p, int n);
 
+/**
+ * Dumps the eight bits that represent the
+ * byte `x` in a single line, separating
+ * bits of the high nibble from the low one
+ * with a whitespace.
+ */
 void dump_bits(unsigned char x);
 
 /**
