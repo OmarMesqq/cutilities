@@ -3,121 +3,149 @@
 typedef union {
   float f;
   unsigned int i;
-} U;
+} FloatRepresentation;
+
+typedef union {
+  double d;
+  unsigned long i;
+} DoubleRepresentation;
 
 float float2(float f) {
-  U u;
+  FloatRepresentation u;
   unsigned int u1;
 
-  u.f = f;   // armazena float na union
-  u1 = u.i;  // obtém a representação do float
+  // Store float in memory and get its bit representation
+  u.f = f;
+  u1 = u.i;
 
-  // descarta os bits da mantissa (0-22) e mascara os bits após o bit 7, efetivamente obtendo os bits do expoente
+  /**
+   * Discard mantissa bits (0-22) and mask bits beyond bit 7,
+   * effectively attaining the exponent bits
+   * */
   unsigned int exp = (u.i >> 23) & 0xff;
+
+  /**
+   * Multiply number by 2
+   */
   exp += 1;
 
-  // desloca 0xFF para começar no bit 22 (inicio do expoente), e nega este valor. Após o AND, o efeito é de remover o expoente anterior
+  /**
+   * Shift 0xff to start at bit 22 (exponent start) and NOT it.
+   * After ANDing, we clear the previous exponent
+   */
   u1 &= ~(0xff << 23);
 
-  // coloca o novo expoente na posição esperada (bit 22) e faz OU INCLUSIVO para atualizar o nosso expoente
+  /**
+   * Update our exponent by ORing 
+   * our new exponent shifted to its position (bit 22)
+   */
   u1 |= (exp << 23);
 
-  u.i = u1;  // guarda representação do float * 2 na union
-
+  /**
+   * Return the modified bits
+   * "interpreted" (casted) as `float`
+   */
+  u.i = u1;
   return u.f;
 }
 
 int float2int(float f) {
-  if (f == 0) return 0;
-  U u;
-  u.f = f;
-
-  // Número muito próximo de INT_MAX para fazer com que esse if capture casos de overflow
-  if (f > 2147483520.0f) {
-    printf("float2int: float excede tamanho máximo de int! Retornando INT_MAX!\n");
-    return INT_MAX;
+  if (f == 0) {
+    return 0;
   }
 
+  FloatRepresentation u;
+  u.f = f;
+
+  /**
+   * Use numbers very close to INT_MAX and INT_MIN
+   * so that the guards below capture overflow cases
+   */
+  if (f > 2147483520.0f) {
+    printf("float2int: float exceeds maximum integer size. Returning INT_MAX!\n");
+    return INT_MAX;
+  }
   if (f < INT_MIN) {
-    printf("float2int: float excede tamanho mínimo de int! Retornando INT_MIN!\n");
+    printf("float2int: float exceeds minimum integer size. Returning INT_MIN!\n");
     return INT_MIN;
   }
 
-  uint8_t s, e;
-  uint32_t m;
+  uint8_t s = 0;
+  uint8_t e = 0;
+  uint32_t m = 0;
 
   s = (u.i >> 31) & 1;
   e = (u.i >> 23) & 0xff;
   m = u.i & 0x7fffff;
 
-  uint32_t bitsDaMantissa = 0;
-  bitsDaMantissa |= (1 << 23);  // adiciona 1 implícito da IEEE 754
-  bitsDaMantissa |= m;
+  uint32_t mantissaBits = 0;
+  mantissaBits |= (1 << 23);  // adds implicit 1 (IEEE 754)
+  mantissaBits |= m;
 
-  // Divide por 2^23 pois tratamos bitsDaMantissa como um inteiro shiftado 23 bits para a direita
-  float mantissaVerdadeira = bitsDaMantissa / (float)pow(2, 23);
+  // Divide by 2^23 as we treat mantissaBits as an integer right shifted by 23 bits
+  float trueMantissa = mantissaBits / (float)pow(2, 23);
 
-  int expoenteVerdadeiro = e - 127;
+  int trueExponent = e - 127;
 
-  return (int)(pow(-1, s) * mantissaVerdadeira * pow(2, expoenteVerdadeiro));
+  return (int)(pow(-1, s) * trueMantissa * pow(2, trueExponent));
 }
 
 float int2float(int i) {
   if (i == 0) {
-    // Caso especial
     return 0.0;
   }
-  U u;
+
+  FloatRepresentation u;
   int s;
   unsigned mantissa = 0;
-  unsigned intConvertido = 0;
+  unsigned convertedInt = 0;
   char floatBias = 127;
 
   if (i < 0) {
     s = 1;
-    i = -i;  // precisamos do valor absoluto do numero negativo
+    i = -i;  // get absolute value of negative number
   } else {
     s = 0;
   }
 
-  char achouPrimeiroBit1 = 0;
-  int posicaoMantissa = 22;
+  char foundFirstBit1 = 0;
+  int mantissaPosition = 22;
   int exp = 0;
 
   for (int count = 31; count >= 0; count--) {
-    char bitAtual = (i >> count) & 1;
-    if (bitAtual == 1 && !achouPrimeiroBit1) {
-      achouPrimeiroBit1 = 1;
-      exp = count;  // o expoente sem viés é justamente a posição do primeiro bit 1
-      continue;     // pula pois o primeiro um é implícito em IEEE 754
+    char currentBit = (i >> count) & 1;
+    if (currentBit == 1 && !foundFirstBit1) {
+      foundFirstBit1 = 1;
+      // the exponent without bias is really the position of the first 1 bit
+      exp = count;
+      // skip current iteration as first 1 bit is implicit in IEEE 754
+      continue;
     }
 
-    if (achouPrimeiroBit1) {
-      // o if abaixo descarta bits de números grandes (mais de 23 bits de mantissa), garantindo o tamanho máximo do float em IEEE 754
-      if (posicaoMantissa >= 0) {
-        mantissa |= (bitAtual << posicaoMantissa);
-        posicaoMantissa--;
+    if (foundFirstBit1) {
+      /**
+       * Discard bits of large numbers (more than 23 mantissa bits), ensuring
+       * maximum float size in IEEE 754
+       */
+      if (mantissaPosition >= 0) {
+        mantissa |= (currentBit << mantissaPosition);
+        mantissaPosition--;
       }
     }
   }
 
   exp += floatBias;
-  intConvertido |= (s << 31);
-  intConvertido |= (exp << 23);
-  intConvertido |= mantissa;
+  convertedInt |= (s << 31);
+  convertedInt |= (exp << 23);
+  convertedInt |= mantissa;
 
-  u.i = intConvertido;
+  u.i = convertedInt;
   return u.f;
 }
 
 double maxdouble(double a, double b) {
-  typedef union {
-    double d;
-    unsigned long i;
-  } U;
-
-  U ua;
-  U ub;
+  DoubleRepresentation ua;
+  DoubleRepresentation ub;
 
   ua.d = a;
   ub.d = b;
@@ -133,7 +161,7 @@ double maxdouble(double a, double b) {
     return a;
   }
 
-  // A partir deste ponto, temos que comparar `m` e `e` pois os sinais são iguais
+  // From this point on, we must compare `m` and `e` and the numbers have same signedness
   uint16_t ea, eb;
   uint64_t ma, mb;
 
@@ -143,47 +171,56 @@ double maxdouble(double a, double b) {
   ma = ua.i & 0xFFFFFFFFFFFFF;
   mb = ub.i & 0xFFFFFFFFFFFFF;
 
-  uint64_t bitsDaMantissaA = 0;
-  uint64_t bitsDaMantissaB = 0;
+  uint64_t mantissaBitsA = 0;
+  uint64_t mantissaBitsB = 0;
 
-  // Usa explicitamente 1 de 64 bits para evitar aviso de overflow
-  bitsDaMantissaA |= 1ULL << 52;
-  bitsDaMantissaB |= 1ULL << 52;
+  // Use 64-bit wide "1" to avoid compiler overflow warnings
+  mantissaBitsA |= 1ULL << 52;
+  mantissaBitsB |= 1ULL << 52;
 
-  bitsDaMantissaA |= ma;
-  bitsDaMantissaB |= mb;
+  mantissaBitsA |= ma;
+  mantissaBitsB |= mb;
 
-  // Remove bias do double para obter expoente real
+  // Remove bias from the `double`s to get their true exponent
   int expA = ea - 1023;
   int expB = eb - 1023;
 
-  // Comparamos os expontes primeiro
-  // Como a mantissa (1.M) está sempre entre [1.0, 2.0), se seus expoentes forem distintos,
-  // o maior expoente significa número maior (se positivos) ou menor (se negativos)
+  /**
+   * Compare the exponents first:
+   * 
+   * As the mantissa (1.M) is in [1.0, 2.0), if their exponents
+   * are distinct, the number with the biggest exponent
+   * is the biggest (if both are positive). If they are negative,
+   * the biggest exponent is the smallest number.
+   */
   if (expA != expB) {
-    // Como os numeros tem sinais iguais, checamos qualquer um para saber se são positivos ou negativos
+    // Both numbers have same signedness, check either one
     if (sa == 0) {
-      // São positivos: quem tiver maior expoente é maior
+      // They are positive: biggest exponent is the largest number
       return (expA > expB) ? a : b;
     } else {
-      // São positivos: quem tiver maior expoente é menor
+      // They are negative: biggest exponent is the smallest number
       return (expA < expB) ? a : b;
     }
   }
 
-  // Se forem iguais, comparamos as mantissas
-  if (bitsDaMantissaA != bitsDaMantissaB) {
-    // Como os numeros tem sinais iguais, checamos qualquer um para saber se são positivos ou negativos
+  /**
+   * Signedness and exponents are the same, compare the mantissas:
+   */
+  if (mantissaBitsA != mantissaBitsB) {
     if (sa == 0) {
       // Positive: larger mantissa means larger value
-      return (bitsDaMantissaA > bitsDaMantissaB) ? a : b;
+      return (mantissaBitsA > mantissaBitsB) ? a : b;
     } else {
-      // Negative: larger mantissa means more negative → smaller
-      return (bitsDaMantissaA < bitsDaMantissaB) ? a : b;
+      // Negative: larger mantissa means more negative (smaller)
+      return (mantissaBitsA < mantissaBitsB) ? a : b;
     }
   }
 
-  // São iguais então retornamos qualquer um, no caso, o primeiro
+  /**
+   * Worst case: the numbers are the same, return either one.
+   * I picked the first one for no reason
+   */
   return a;
 }
 

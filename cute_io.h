@@ -1,5 +1,6 @@
 #ifndef CUTE_IO_H
 #define CUTE_IO_H
+
 #include <stdio.h>
 
 /**
