@@ -1,4 +1,4 @@
-SRC := cutilities.c $(wildcard cute_*.c)
+SRC := $(wildcard cute_*.c)
 OBJ := $(SRC:.c=.o)
 SHARED_LIBRARY_FILE := libcutilities.so
 
