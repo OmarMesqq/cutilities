@@ -33,4 +33,27 @@ void itos(char* s, int num, int base);
  */
 char* ultos(unsigned long ul, unsigned long width);
 
+/**
+ * Takes an Unix absolute or relative file path and
+ * returns the its basename as a heap allocated string.
+ *
+ * This function truncates the returned string to `maxBaseNameLength - 1` characters
+ * of the basename as it has to include the null terminator.
+ *
+ * Runs in O(N^2)
+ *
+ * @param filepath string representing a file's path
+ * @param maxBaseNameLength maximal size for basename string INCLUDING the null terminator
+ */
+char* get_basename(const char* filepath, unsigned maxBaseNameLength);
+
+/**
+ * Trims leading spaces (' ')/ 32 (dec)/ 0x20 (hex).
+ *
+ * Runs in O(n)
+ *
+ * SIDE-EFFECT: modifies `line` in-place
+ */
+void trim_leading_spaces(char* line);
+
 #endif
